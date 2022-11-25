@@ -109,6 +109,6 @@
 > #### [⁷Chattr](https://linux.die.net/man/1/chattr)
 > #### [⁸Python](https://linux.die.net/man/1/python)
 > ---
-> #### [Wilipedia - Shell Script](https://en.wikipedia.org/wiki/Shell_script)
+> #### [Wikipedia - Shell Script](https://en.wikipedia.org/wiki/Shell_script)
 > #### [Wikipedia - Rootkit](https://en.wikipedia.org/wiki/Rootkit)
 ---
