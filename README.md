@@ -54,7 +54,7 @@
 
 ## How to install?
 > ```
-> curl https://raw.githubusercontent.com/h0ru/gpk/main/gpk -O gpk 
+>  curl https://raw.githubusercontent.com/h0ru/gpk/main/gpk -O gpk 
 > ```
 ---
 
