@@ -8,11 +8,11 @@
 > ## How to install?
 > ### Wget:
 > ```
-> wget -q https://raw.githubusercontent.com/h0ru/gpk/main/gpk ; chmod +x gpk
+> wget -q https://raw.githubusercontent.com/h0ru/gpk/main/gpk.sh -O gpk ; chmod +x gpk
 > ```
 > ### Curl: 
 > ```
-> curl -q https://raw.githubusercontent.com/h0ru/gpk/main/gpk -O gpk ; chmod +x gpk
+> curl -q https://raw.githubusercontent.com/h0ru/gpk/main/gpk.sh -O gpk ; chmod +x gpk
 > ```
 > ---
 
