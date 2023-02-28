@@ -28,10 +28,6 @@
 > ```
 > ---
 
-> ## Menus
-> ![image](https://github.com/h0ru/gpk/blob/main/menus.png)
-> ---
-
 > ## GPK uses these other scripts
 > ### ➫ [LinPEAS](https://github.com/carlospolop/PEASS-ng/tree/master/linPEAS)
 > ### ➫ [Linux Exploit Suggester ](https://github.com/The-Z-Labs/linux-exploit-suggester)
