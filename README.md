@@ -1,4 +1,12 @@
 # Gengar PwnerKit
+
+> <div>
+>     <img src="https://img.shields.io/badge/-Linux-grey?logo=Linux&logoColor=white" width="70px">
+>     <img src="https://img.shields.io/badge/-Bash-green?logo=GNU-Bash&logoColor=white" width="70px">
+>     <img src="https://img.shields.io/badge/-Python3-3776AB?logo=Python&logoColor=white" width="90px">
+>     <img src="https://img.shields.io/badge/-PHP-777BB4?logo=PHP&logoColor=white" width="65px">
+> </div>
+
 > ## | Post Exploration | Privilege Escalation | Persistence |
 > 
 >                  ![image](https://github.com/h0ru/gpk/blob/main/gengar.gif)
