@@ -33,7 +33,7 @@ wget -q https://raw.githubusercontent.com/h0ru/gpk/main/bin/gpk -O gpk ; chmod +
      [+] -ds        -   DEEP SEARCH (Show Tools, Crontab Files, SUID Binaries, Writable Folders)
      [+] -n         -   NETWORK (Show Network Information and use Ping Sweep and Port Scan modes)
      [+] -c2        -   CHACAL C2 (Manage SSH Connections Through a Dashboard)
-     [+] -p         -   PERSISTENCE (Create a Privileged User Called BACKUPS and Create a Backdoor in Python3)
+     [+] -p         -   PERSISTENCE (Create a Privileged User Called BACKUPS, Create a Backdoor in Python3 and an SSH KEY)
 ```
 ---
 
