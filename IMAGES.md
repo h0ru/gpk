@@ -5,7 +5,7 @@
 
 ## Help Menu
 
-                    ![image](https://github.com/h0ru/gpk/blob/main/images/helpmenu.png)
+                    ![image](https://github.com/h0ru/gpk/blob/main/images/help.png)
 
 ---
 
