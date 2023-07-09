@@ -10,23 +10,29 @@
  
                     ![image](https://github.com/h0ru/gpk/blob/main/gengar.gif)
 
- ---
+---
+ 
+## About Gengar PwnerKit
+### [+] Educational purposes
+### [+] Rewritten and more objective code
+### [+] New Features
+### [+] Better usability
+---
 
-```
-          :::}══════════════════════════════════════{:::
-          
-                ▄▀  ▄███▄      ▄     ▄▀  ██   █▄▄▄▄ 
-              ▄▀    █▀   ▀      █  ▄▀    █ █  █  ▄▀ 
-              █ ▀▄  ██▄▄    ██   █ █ ▀▄  █▄▄█ █▀▀▌  
-              █   █ █▄   ▄▀ █ █  █ █   █ █  █ █  █  
-               ███  ▀███▀   █  █ █  ███     █   █   
-                            █   ██         █   ▀     
-                                          ▀         
-                      ——==[[乃ㄚ 卄0尺ㄩ]]==—— 
-          :::}══════════════════════════════════════{:::
-```
 ## How to Install?
 ```
 wget -q https://github.com/h0ru/gpk/blob/main/bin/gpk -O gpk ; chmod +x gpk
+```
+---
+## Help Menu
+```
+ [*] HELP MENU
+
+     [+] -h --help  -   HELP MENU (Show these help)
+     [+] -m         -   MACHINE INFORMATIONS (Show Hardware/System Infos)
+     [+] -ds        -   DEEP SEARCH (Show Tools, Crontab Files, SUID Binaries, Writable Folders)
+     [+] -n         -   NETWORK (Show Network Information and use Ping Sweep and Port Scan modes)
+     [+] -c2        -   CHACAL C2 (Manage SSH Connections Through a Dashboard)
+     [+] -p         -   PERSISTENCE (Create a Privileged User Called BACKUPS and Create a Backdoor in Python3)
 ```
 ---
