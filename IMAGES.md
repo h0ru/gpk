@@ -15,6 +15,17 @@
 
 ---
 
+## Ping Sweep
+
+                    ![image](https://github.com/h0ru/gpk/blob/main/images/Ping_Sweep.png)
+
+---
+
+## Port Scan
+
+                    ![image](https://github.com/h0ru/gpk/blob/main/images/Port_Scan.png)
+
+---
 
 ## Chacal C2
 
