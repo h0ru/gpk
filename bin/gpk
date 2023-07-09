@@ -234,7 +234,6 @@ ping_sweep() {
   done
 }
 
-
 port_scan() {
   local ip=$1
 
@@ -245,6 +244,134 @@ port_scan() {
       echo -e "[+] Port"$Cn" $port"$Gn" open"$We" on $ip"
     fi
   done
+}
+
+# ---------------------------
+#         [CHACALC2]
+# ---------------------------
+function chacal-c2() {
+  while true; do
+    clear
+
+if [ ! -d "/tmp/chacal-c2" ]; then
+    mkdir "/tmp/chacal-c2"
+    chmod 770 /tmp/chacal-c2
+fi
+
+if [ ! -f "/tmp/chacal-c2/targets.txt" ]; then
+    touch /tmp/chacal-c2/targets.txt
+    chmod 660 /tmp/chacal-c2/targets.txt
+fi
+
+logo
+logs=$(cat /tmp/chacal-c2/targets.txt | sed -E 's/ / : /g' | sed 's/^/ /')
+    echo -e "
+   
+   [$Yw?$We]═════════════════════════════════════════════════╗
+   ║   Chacal-C2 Directory: $Gn/tmp/chacal-c2$We             ║ 
+   ║   Targets File: $Gn/tmp/chacal-c2/targets.txt$We        ║ 
+   ╚═════════╪════════════╪══════════════╪═════════════╝ 
+             │            │              │ 
+  [$Rd!$We]════════╪════════════╪══════════════╪══════════════╗
+  ║$Pe    ID    $We│$Pe    User    $We│$Pe    Passwd    $We│$Pe    Address$We   ║           
+  ╚══════════╪════════════╪══════════════╪══════════════╝
+    "
+    cat /tmp/chacal-c2/targets.txt | sed -E 's/ /   :   /g' | sed 's/^/ /'
+
+    echo -e "
+    
+    1. Return
+    2. Add Target
+    3. Remove Target
+    4. Access Target
+    "
+    read -p "[Option]> " option
+
+    case $option in
+      1)
+        break
+        ;;
+      2)
+        addtarget
+        ;;
+      3)
+        removetarget
+        ;;
+      4)
+        accesstarget
+        ;;
+      *)
+        echo
+        echo -e "$Rd"  Invalid Option!"$We"
+        echo
+        read -p " Press any key to continue..."
+        ;;
+    esac
+  done
+}
+
+gen_id() {
+    local id=$(cat /dev/urandom | tr -dc 'a-z0-9' | fold -w 10 | head -n 1)
+    echo "$id"
+}
+
+logo() {
+    echo -e "$We
+  ╪════════════════════════════════════════════════════════════════════════╪$Rd  
+
+      ██████╗██╗  ██╗ █████╗  ██████╗ █████╗ ██╗          ██████╗██████╗ 
+     ██╔════╝██║  ██║██╔══██╗██╔════╝██╔══██╗██║         ██╔════╝╚════██╗
+     ██║     ███████║███████║██║     ███████║██║         ██║      █████╔╝
+     ██║     ██╔══██║██╔══██║██║     ██╔══██║██║         ██║     ██╔═══╝ 
+     ╚██████╗██║  ██║██║  ██║╚██████╗██║  ██║███████╗    ╚██████╗███████╗
+      ╚═════╝╚═╝  ╚═╝╚═╝  ╚═╝ ╚═════╝╚═╝  ╚═╝╚══════╝     ╚═════╝╚══════╝$We
+                            
+                          $Pe——==[[乃ㄚ 卄0尺ㄩ]]==——$We       
+
+  ╪════════════════════════════════════════════════════════════════════════╪" 
+}
+
+addtarget() {
+    echo -e "
+    $Be ADD your SSH connection $We
+    "   
+    read -p "> Username: " userssh
+    read -p "> Password: " passwdssh
+    read -p "> IP: " ipssh
+    read -p "> Port: " portssh
+    echo -e "$(gen_id) $userssh $passwdssh $ipssh:$portssh" >> /tmp/chacal-c2/targets.txt
+    echo
+    echo -e "$Gn Added $We"
+    echo
+    echo
+    clear
+}
+
+accesstarget() {
+    echo -e "
+    $Pe Acess SSH connection $We
+    "
+    credentials_file="/tmp/chacal-c2/targets.txt"
+    read -p "> Target ID: " targetid
+    echo
+    local line=$(grep "^$targetid" "$credentials_file")
+    local user=$(echo "$line" | cut -d ' ' -f 2)
+    local pass=$(echo "$line" | cut -d ' ' -f 3)
+    local ip=$(echo "$line" | cut -d ' ' -f 4 |cut -d ':' -f 1)
+    local port=$(echo "$line" | cut -d ' ' -f 4 |cut -d ':' -f 2)
+    echo -e "$Gn Target password:$We $pass" 
+    ssh $user@$ip -p $port
+}
+
+removetarget() {
+    echo -e "
+    $Rd Remove SSH connection $We
+    "
+    read -p "> Target ID: " targetid
+    sed -i "/$targetid/d" /tmp/chacal-c2/targets.txt
+    echo
+    echo
+    clear
 }
 
 # ---------------------------
@@ -302,6 +429,7 @@ options=(
 "MachineInfo"
 "DeepSearch"
 "Network"
+"ChacalC2"
 )
 
  select var in "${options[@]}"; do
@@ -324,6 +452,9 @@ deepsearch
 ;;
 "Network")
 network
+;;
+"ChacalC2")
+chacal-c2
 ;;
 *)
   echo
