@@ -36,3 +36,6 @@ wget -q https://github.com/h0ru/gpk/blob/main/bin/gpk -O gpk ; chmod +x gpk
      [+] -p         -   PERSISTENCE (Create a Privileged User Called BACKUPS and Create a Backdoor in Python3)
 ```
 ---
+
+## Check out some images
+### [IMAGES](https://github.com/h0ru/gpk/blob/main/IMAGES.md)
