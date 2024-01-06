@@ -21,7 +21,7 @@
 
 ## How to Install?
 ```
-wget -q https://raw.githubusercontent.com/h0ru/gpk/main/bin/gpk -O gpk ; chmod +x gpk
+wget -q https://raw.githubusercontent.com/h0ru/gpk/main/source/gpk -O gpk ; chmod +x gpk
 ```
 ---
 ## Help Menu
